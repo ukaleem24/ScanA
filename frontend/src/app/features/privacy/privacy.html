@@ -1,0 +1,37 @@
+<section class="privacy">
+  <h1 tabindex="-1">{{ i18n.t('privacy.title') }}</h1>
+
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <ul>
+        <li>
+          <mat-icon aria-hidden="true">no_sim</mat-icon>
+          <span>{{ i18n.t('privacy.saved') }}</span>
+        </li>
+        <li>
+          <mat-icon aria-hidden="true">memory</mat-icon>
+          <span>{{ i18n.t('privacy.memory') }}</span>
+        </li>
+        <li>
+          <mat-icon aria-hidden="true">cloud_upload</mat-icon>
+          <span>{{ i18n.t('privacy.sent') }}</span>
+        </li>
+        <li>
+          <mat-icon aria-hidden="true">gavel</mat-icon>
+          <span>{{ i18n.t('privacy.notLegal') }}</span>
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+
+  @if (devProvider(); as provider) {
+    <div class="dev-warning" role="alert">
+      <mat-icon aria-hidden="true">warning</mat-icon>
+      <span>{{ i18n.t('privacy.dev', { provider }) }}</span>
+    </div>
+  }
+
+  <button mat-flat-button type="button" class="continue" (click)="accept()">
+    {{ session.privacyAccepted() ? i18n.t('privacy.continue') : i18n.t('privacy.accept') }}
+  </button>
+</section>

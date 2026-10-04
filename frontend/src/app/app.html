@@ -1,0 +1,26 @@
+<div class="shell" [dir]="i18n.dir()">
+  <mat-toolbar class="bar">
+    <mat-icon aria-hidden="true">document_scanner</mat-icon>
+    <span class="title">BriefScanner</span>
+    <span class="spacer"></span>
+
+    <button mat-button type="button" class="lang-button" [matMenuTriggerFor]="langMenu" [attr.aria-label]="i18n.t('nav.language')">
+      <mat-icon aria-hidden="true">language</mat-icon>
+      {{ i18n.language().toUpperCase() }}
+    </button>
+    <mat-menu #langMenu="matMenu">
+      @for (lang of languages; track lang.code) {
+        <button mat-menu-item type="button" [attr.lang]="lang.code" [attr.dir]="lang.rtl ? 'rtl' : 'ltr'" (click)="select(lang.code)">
+          <mat-icon aria-hidden="true">{{ lang.code === i18n.language() ? 'check' : '' }}</mat-icon>
+          <span>{{ lang.label }}</span>
+        </button>
+      }
+    </mat-menu>
+
+    <a mat-icon-button routerLink="/" [attr.aria-label]="i18n.t('nav.privacy')"><mat-icon>privacy_tip</mat-icon></a>
+  </mat-toolbar>
+
+  <main>
+    <router-outlet />
+  </main>
+</div>

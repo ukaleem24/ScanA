@@ -1,0 +1,139 @@
+<article class="result">
+  <h1 class="sr-only" tabindex="-1">{{ r().sender }}</h1>
+
+  @if (session.loading()) {
+    <div class="updating" role="status">
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="i18n.t('result.updating')" />
+      <p>{{ i18n.t('result.updating') }}</p>
+    </div>
+  }
+
+  @if (errorText(); as text) {
+    <div class="error" role="alert">
+      <mat-icon aria-hidden="true">error</mat-icon>
+      <span>{{ text }}</span>
+      <button mat-button type="button" (click)="retry()" [disabled]="session.loading()">{{ i18n.t('result.retry') }}</button>
+    </div>
+  }
+
+  <div [class]="'urgency urgency-' + r().urgency.level" role="status">
+    <mat-icon aria-hidden="true">{{ urgency().icon }}</mat-icon>
+    <div>
+      <strong>{{ i18n.t(urgency().key) }}</strong>
+      <div>{{ r().urgency.reason }}</div>
+    </div>
+  </div>
+
+  @if (r().confidence_notes.length > 0) {
+    <section class="notes" aria-labelledby="h-notes">
+      <h2 id="h-notes"><mat-icon aria-hidden="true">visibility_off</mat-icon> {{ i18n.t('result.unclearTitle') }}</h2>
+      <p>{{ i18n.t('result.unclearIntro') }}</p>
+      <ul>
+        @for (note of r().confidence_notes; track $index) {
+          <li>{{ note }}</li>
+        }
+      </ul>
+    </section>
+  }
+
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>{{ r().sender }}</mat-card-title>
+      <mat-card-subtitle>
+        {{ r().letter_type }}@if (r().date_of_letter) { · {{ date(r().date_of_letter) }} }
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ r().summary }}</p>
+      @if (r().reference_numbers.length > 0) {
+        <p class="refs">
+          <span>{{ i18n.t('result.reference') }}</span>
+          <bdi dir="ltr">{{ r().reference_numbers.join(' · ') }}</bdi>
+        </p>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <section aria-labelledby="h-actions">
+    <h2 id="h-actions"><mat-icon aria-hidden="true">checklist</mat-icon> {{ i18n.t('result.actions') }}</h2>
+    @if (r().actions_required.length > 0) {
+      <ol class="actions">
+        @for (action of r().actions_required; track $index) {
+          <li>{{ action }}</li>
+        }
+      </ol>
+    } @else {
+      <p class="empty">{{ i18n.t('result.noActions') }}</p>
+    }
+  </section>
+
+  <section aria-labelledby="h-deadlines">
+    <h2 id="h-deadlines"><mat-icon aria-hidden="true">event</mat-icon> {{ i18n.t('result.deadlines') }}</h2>
+    @for (d of r().deadlines; track $index) {
+      <mat-card appearance="outlined" class="item">
+        <mat-card-content>
+          <strong>{{ d.date ? date(d.date) : i18n.t('result.dateUnclear') }}</strong>
+          <div>{{ d.what_happens }}</div>
+        </mat-card-content>
+      </mat-card>
+    } @empty {
+      <p class="empty">{{ i18n.t('result.noDeadlines') }}</p>
+    }
+  </section>
+
+  <section aria-labelledby="h-amounts">
+    <h2 id="h-amounts"><mat-icon aria-hidden="true">euro</mat-icon> {{ i18n.t('result.amounts') }}</h2>
+    @for (a of r().amounts; track $index) {
+      <mat-card appearance="outlined" class="item">
+        <mat-card-content>
+          <strong class="amount" dir="ltr">{{ eur(a.value_eur) }}</strong>
+          <div>{{ a.purpose }}</div>
+          @if (a.due_date) {
+            <div class="due">{{ i18n.t('result.due', { date: date(a.due_date) }) }}</div>
+          }
+        </mat-card-content>
+      </mat-card>
+    } @empty {
+      <p class="empty">{{ i18n.t('result.noAmounts') }}</p>
+    }
+  </section>
+
+  <section aria-labelledby="h-terms">
+    <h2 id="h-terms"><mat-icon aria-hidden="true">menu_book</mat-icon> {{ i18n.t('result.terms') }}</h2>
+    @if (r().key_terms.length > 0) {
+      <mat-accordion>
+        @for (t of r().key_terms; track $index) {
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title lang="de" dir="ltr">{{ t.term }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>{{ t.explanation }}</p>
+          </mat-expansion-panel>
+        }
+      </mat-accordion>
+    } @else {
+      <p class="empty">{{ i18n.t('result.noTerms') }}</p>
+    }
+  </section>
+
+  @if (r().full_translation) {
+    <section aria-labelledby="h-translation">
+      <h2 id="h-translation"><mat-icon aria-hidden="true">translate</mat-icon> {{ i18n.t('result.translation') }}</h2>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{ i18n.t('result.showTranslation') }}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="translation">{{ r().full_translation }}</p>
+      </mat-expansion-panel>
+    </section>
+  }
+
+  <p class="disclaimer">{{ i18n.t('result.disclaimer') }}</p>
+
+  <div class="footer-actions">
+    @if (pageCount > 0) {
+      <button mat-stroked-button type="button" (click)="editPages()">{{ i18n.t('result.backToPages') }}</button>
+    }
+    <button mat-flat-button type="button" (click)="startOver()">{{ i18n.t('result.scanAnother') }}</button>
+  </div>
+</article>

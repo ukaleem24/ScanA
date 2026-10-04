@@ -1,0 +1,70 @@
+<section class="capture">
+  <h1 tabindex="-1">{{ i18n.t('capture.title') }}</h1>
+  <p class="hint">{{ i18n.t('capture.hint', { max: maxPages }) }}</p>
+
+  <div class="actions">
+    <button mat-flat-button type="button" class="camera" [disabled]="session.loading()" (click)="camera.click()">
+      <mat-icon aria-hidden="true">photo_camera</mat-icon>
+      {{ store.count() === 0 ? i18n.t('capture.takePhoto') : i18n.t('capture.addAnother') }}
+    </button>
+    <button mat-stroked-button type="button" [disabled]="session.loading()" (click)="upload.click()">
+      <mat-icon aria-hidden="true">upload_file</mat-icon>
+      {{ i18n.t('capture.upload') }}
+    </button>
+  </div>
+  <input #camera hidden type="file" accept="image/*" capture="environment" (change)="onPick($event)" />
+  <input #upload hidden type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,application/pdf" multiple (change)="onPick($event)" />
+
+  <p class="hint language-note">{{ i18n.t('capture.language', { language: i18n.languageName() }) }}</p>
+
+  @if (message(); as text) {
+    <p class="error" role="alert"><mat-icon aria-hidden="true">error</mat-icon> {{ text }}</p>
+  }
+
+  @if (store.count() > 0) {
+    <h2>{{ i18n.t('capture.pages', { n: store.count() }) }}</h2>
+    <ol class="pages" cdkDropList (cdkDropListDropped)="onDrop($event)">
+      @for (page of store.pages(); track page.id; let i = $index; let first = $first; let last = $last) {
+        <li class="page" cdkDrag cdkDragLockAxis="y">
+          <span class="handle" cdkDragHandle aria-hidden="true"><mat-icon>drag_indicator</mat-icon></span>
+          @if (page.previewUrl) {
+            <img [src]="page.previewUrl" [alt]="i18n.t('capture.page', { n: i + 1 })" />
+          } @else {
+            <span class="pdf-thumb" aria-hidden="true"><mat-icon>picture_as_pdf</mat-icon></span>
+          }
+          <span class="label">{{ page.kind === 'pdf' ? page.name : i18n.t('capture.page', { n: i + 1 }) }}</span>
+          <span class="controls">
+            <button mat-icon-button type="button" [disabled]="first || session.loading()"
+              [attr.aria-label]="i18n.t('capture.moveUp', { n: i + 1 })" (click)="store.move(i, i - 1)">
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button mat-icon-button type="button" [disabled]="last || session.loading()"
+              [attr.aria-label]="i18n.t('capture.moveDown', { n: i + 1 })" (click)="store.move(i, i + 1)">
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+            <button mat-icon-button type="button" [disabled]="session.loading()"
+              [attr.aria-label]="i18n.t('capture.delete', { n: i + 1 })" (click)="remove(page.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </span>
+        </li>
+      }
+    </ol>
+
+    <div class="options">
+      <mat-slide-toggle [checked]="session.fullTranslation()" (change)="session.fullTranslation.set($event.checked)"
+        [disabled]="session.loading()">
+        {{ i18n.t('capture.fullTranslation') }}
+      </mat-slide-toggle>
+    </div>
+
+    @if (session.loading()) {
+      <mat-progress-bar mode="indeterminate" [attr.aria-label]="i18n.t('capture.analysing')" />
+      <p class="hint" role="status">{{ i18n.t('capture.reading') }}</p>
+    }
+
+    <button mat-flat-button type="button" class="analyze" [disabled]="!canAnalyze()" (click)="analyze()">
+      {{ i18n.t('capture.analyze') }}
+    </button>
+  }
+</section>

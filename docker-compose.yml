@@ -1,0 +1,33 @@
+# Local run:  docker compose up --build   ->  http://localhost:8080
+# Put your keys in a .env file next to this one (see .env.example). Never commit .env.
+services:
+  backend:
+    build: ./backend
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      CLAUDE_MODEL: ${CLAUDE_MODEL:-claude-opus-5-5}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.5-flash}
+      LLM_PROVIDER: ${LLM_PROVIDER:-}
+      RATE_LIMIT_PER_HOUR: ${RATE_LIMIT_PER_HOUR:-20}
+      TRUST_PROXY: "1" # the backend is only reachable through our nginx, which sets X-Forwarded-For
+    expose:
+      - "8000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped

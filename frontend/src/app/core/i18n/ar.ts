@@ -1,0 +1,75 @@
+import { Messages } from './en';
+
+export const ar: Messages = {
+  'nav.privacy': 'معلومات الخصوصية',
+  'nav.language': 'اللغة',
+
+  'privacy.title': 'رسالتك تبقى خاصة',
+  'privacy.saved':
+    'لا يُحفَظ أي شيء. لا يملك BriefScanner قاعدة بيانات ولا يحتفظ بنسخة من رسالتك أو من النتيجة.',
+  'privacy.memory': 'تُعالَج صورك في الذاكرة فقط وتُمحى بمجرد إغلاق هذه الصفحة أو إعادة تحميلها.',
+  'privacy.sent':
+    'لقراءة الرسالة تُرسَل الصفحات بأمان إلى خدمة ذكاء اصطناعي (Claude من Anthropic). تُرسَل أيضًا الأسماء والعناوين الموجودة في الرسالة.',
+  'privacy.notLegal':
+    'الشرح مساعدة بلغة بسيطة وليس استشارة قانونية. في القرارات المهمة اسأل الجهة المرسِلة أو مستشارًا مؤهلًا.',
+  'privacy.dev':
+    'وضع التطوير: يستخدم هذا الخادم {provider}. قد تسمح الباقات المجانية للمزوّد باستخدام المدخلات لتحسين منتجاته. استخدم الرسالة التجريبية فقط ولا تستخدم رسالة حقيقية أبدًا.',
+  'privacy.accept': 'فهمت، متابعة',
+  'privacy.continue': 'متابعة',
+
+  'capture.title': 'أضف رسالتك',
+  'capture.hint': 'صوّر كل صفحة بالترتيب، أو ارفع صورًا أو ملف PDF واحدًا (حتى {max} صفحات).',
+  'capture.takePhoto': 'التقاط صورة',
+  'capture.addAnother': 'إضافة صفحة أخرى',
+  'capture.upload': 'رفع',
+  'capture.pages': 'الصفحات ({n})',
+  'capture.page': 'الصفحة {n}',
+  'capture.moveUp': 'نقل الصفحة {n} للأعلى',
+  'capture.moveDown': 'نقل الصفحة {n} للأسفل',
+  'capture.delete': 'حذف الصفحة {n}',
+  'capture.language': 'لغة الشرح: {language}. يمكنك تغييرها من زر اللغة في الأعلى.',
+  'capture.fullTranslation': 'تضمين الترجمة الكاملة',
+  'capture.analyze': 'تحليل الرسالة',
+  'capture.reading': 'نقرأ رسالتك الآن. قد يستغرق ذلك حتى دقيقة.',
+  'capture.analysing': 'جارٍ تحليل رسالتك',
+
+  'result.urgency.high': 'إلحاح مرتفع',
+  'result.urgency.medium': 'إلحاح متوسط',
+  'result.urgency.low': 'إلحاح منخفض',
+  'result.unclearTitle': 'غير مقروءة بالكامل',
+  'result.unclearIntro': 'بعض الأجزاء لم تكن واضحة. يُرجى التحقق منها في الرسالة الأصلية:',
+  'result.reference': 'المرجع:',
+  'result.actions': 'ما عليك فعله',
+  'result.noActions': 'لا يُطلب منك شيء.',
+  'result.deadlines': 'المواعيد النهائية',
+  'result.dateUnclear': 'التاريخ غير واضح',
+  'result.noDeadlines': 'لم يتم العثور على مواعيد نهائية.',
+  'result.amounts': 'المبالغ',
+  'result.noAmounts': 'لم يتم العثور على مبالغ.',
+  'result.due': 'تاريخ الاستحقاق: {date}',
+  'result.terms': 'مصطلحات أساسية',
+  'result.noTerms': 'لا توجد مصطلحات خاصة.',
+  'result.translation': 'الترجمة الكاملة',
+  'result.showTranslation': 'عرض النص الكامل',
+  'result.disclaimer':
+    'أنشأ الذكاء الاصطناعي هذا الشرح وقد يحتوي على أخطاء. وهو ليس استشارة قانونية. تحقق من التواريخ والمبالغ في الرسالة الأصلية.',
+  'result.backToPages': 'العودة إلى الصفحات',
+  'result.scanAnother': 'مسح رسالة أخرى',
+  'result.updating': 'جارٍ تحديث الشرح بلغتك…',
+  'result.retry': 'إعادة المحاولة',
+
+  'error.too_many_pages': 'يمكن أن تتكون الرسالة من 10 صفحات كحد أقصى.',
+  'error.file_too_large':
+    'الملفات كبيرة جدًا (الحد الأقصى 10 ميغابايت في المجموع). احذف صفحة أو استخدم صورة أصغر.',
+  'error.unsupported_type': 'نوع الملف هذا غير مدعوم. استخدم صورة JPEG أو PNG أو WebP، أو ملف PDF.',
+  'error.pdf_must_be_single_file': 'ارفع ملف PDF واحدًا أو عدة صور، وليس الاثنين معًا.',
+  'error.no_files': 'أضف صفحة واحدة على الأقل أولًا.',
+  'error.unsupported_language': 'هذه اللغة غير متاحة.',
+  'error.busy': 'خدمة التحليل مشغولة حاليًا. حاول مرة أخرى بعد دقيقة.',
+  'error.rate_limited': 'طلبات كثيرة جدًا. انتظر قليلًا ثم حاول مرة أخرى.',
+  'error.analysis_failed': 'تعذّر تحليل الرسالة. جرّب صورًا أوضح أو أعد المحاولة.',
+  'error.not_configured': 'الخدمة غير مهيأة بعد (مفتاح API مفقود على الخادم).',
+  'error.network': 'تعذّر الاتصال بالخادم. تحقق من اتصالك وحاول مرة أخرى.',
+  'error.timeout': 'استغرق التحليل وقتًا طويلًا. حاول مرة أخرى.',
+  'error.unknown': 'حدث خطأ ما. حاول مرة أخرى.',
+};
