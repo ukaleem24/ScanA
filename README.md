@@ -1,11 +1,54 @@
 # BriefScanner
 
-Photograph or upload an official German letter (Finanzamt, Krankenkasse, Jobcenter, landlord, Mahnung, ...) and
-get a plain-language explanation in your own language: sender, summary, urgency, deadlines, amounts, required
-actions and key terms. Languages: English, German, Arabic, Turkish, Ukrainian, Russian, Persian, Spanish, French
-(right-to-left layout for Arabic and Persian).
+**Understand official German letters in your own language.** Photograph or upload a letter (Finanzamt,
+Krankenkasse, Jobcenter, landlord, Mahnung, ...) and get a plain-language explanation: who sent it, what it
+means, how urgent it is, what you must pay or do, and by when.
 
-Nothing is stored. Letters are processed in memory and forwarded only to the AI provider.
+Mobile-first, installable as an app on Android and iOS (PWA), and private by design: nothing is stored.
+
+<p align="center">
+  <img src="docs/screenshots/capture.png" alt="Capture screen with page list" width="260">
+  <img src="docs/screenshots/result.png" alt="Result screen with urgency banner and summary" width="260">
+  <img src="docs/screenshots/capture-rtl-arabic.png" alt="Capture screen in Arabic, right-to-left" width="260">
+</p>
+
+<sub>Screenshots use the fictitious sample letter in `samples/` and a recorded sample result. The right-hand
+screen shows the Arabic right-to-left interface.</sub>
+
+[Full result screen](docs/screenshots/result-full.png) · [Privacy screen](docs/screenshots/privacy.png)
+
+## Features
+
+- **Camera or upload:** take photos with the phone camera or upload images or a PDF (up to 10 pages, 10 MB).
+  Pages can be reordered and deleted before sending.
+- **Structured result:** sender, letter type, date, reference numbers, a 3-5 sentence summary, urgency
+  (low/medium/high with a reason), deadlines, amounts in EUR, concrete action steps, and German key terms with
+  simple explanations. An optional full translation is available.
+- **Honest about uncertainty:** unreadable or ambiguous parts are listed as confidence notes, not guessed.
+- **9 languages:** English, German, Arabic, Turkish, Ukrainian, Russian, Persian, Spanish, French, including
+  right-to-left layout for Arabic and Persian. Changing the language re-analyses the pages still in memory.
+- **Installable PWA:** works offline for the app shell; the API is never cached.
+- **Privacy:** no database, no content logging, in-memory processing, EXIF/GPS stripped, self-hosted fonts and
+  icons (no third-party requests), per-IP rate limit.
+- **Swappable AI provider:** Claude (production) or Gemini free tier (development, sample letters only).
+
+## Tech stack
+
+Angular 22 (standalone components, Angular Material, service worker) · FastAPI on Python 3.12 · Pydantic
+schema validation · Anthropic SDK (vision, structured output) · Docker Compose with nginx · pytest and Vitest
+(AI client mocked, no network in tests).
+
+## Status and roadmap
+
+A working prototype, not yet deployed. Planned, not built yet:
+
+- [ ] OpenRouter adapter with model fallback
+- [ ] Use the text layer of digital PDFs instead of images where available
+- [ ] Native-speaker review of the non-English interface texts
+- [ ] Hosted demo
+- [ ] Token-usage metrics (counts only, never content)
+
+Not legal advice: the explanation is AI-generated and can contain mistakes.
 
 ## Quick start with Docker
 

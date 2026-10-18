@@ -47,7 +47,7 @@
       <p>{{ r().summary }}</p>
       @if (r().reference_numbers.length > 0) {
         <p class="refs">
-          <span>{{ i18n.t('result.reference') }}</span>
+          <span>{{ i18n.t('result.reference') }}</span>{{ ' ' }}
           <bdi dir="ltr">{{ r().reference_numbers.join(' · ') }}</bdi>
         </p>
       }
